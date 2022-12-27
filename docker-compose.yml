@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    restart: "no"
+    depends_on:
+      - server
+      - api
+    env_file:
+      - .env
+    volumes:
+      - "front-volume:/app/dist:rw"
+      - "certs-volume:/app/certs:rw"
+    networks:
+      - app-network
+  api:
+    image: juliorafaelr/api-todos:latest
+    depends_on:
+      - db
+    env_file:
+      - .env.api
+    volumes:
+      - "back-volume:/var/www:rw"
+    networks:
+      - app-network
+    working_dir: /var/www
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.db
+    networks:
+      - app-network
+  server:
+    image: nginx
+    volumes:
+      - "./templates:/etc/nginx/templates"
+      - "front-volume:/Sites/front_end"
+      - "back-volume:/var/www:rw"
+      - "certs-volume:/etc/nginx/certs"
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env.server
+    networks:
+      - app-network
+    tty: true
+volumes:
+  front-volume:
+  back-volume:
+  certs-volume:
+networks:
+  app-network:
+    driver: bridge

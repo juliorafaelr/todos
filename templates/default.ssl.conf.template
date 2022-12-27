@@ -1,0 +1,45 @@
+server {
+    listen      ${NGINX_SSL_PORT} ssl;
+    root        /Sites/front_end;
+    server_name ${NGINX_HOST} www.${NGINX_HOST};
+    index       index.php index.html index.htm;
+    ssl_certificate /etc/nginx/certs/${NGINX_HOST}.pem;
+    ssl_certificate_key /etc/nginx/certs/${NGINX_HOST}.key;
+
+    location / {
+        root /Sites/front_end;
+        try_files $uri /index.html;
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+
+    location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+        # Some basic cache-control for static files to be sent to the browser
+        expires 1y;
+        add_header Cache-Control "public";
+        access_log off;
+    }
+
+    error_page  403 /error/404.html;
+    error_page  404 /error/404.html;
+    error_page  500 502 503 504 /error/50x.html;
+
+    location /error/ {
+        alias   /home/admin/web/${NGINX_HOST}/document_errors/;
+    }
+
+    location ~* "/\.(htaccess|htpasswd)$" {
+        deny    all;
+        return  404;
+    }
+
+    location /vstats/ {
+        alias   /home/admin/web/${NGINX_HOST}/stats/;
+        include /home/admin/conf/web/${NGINX_HOST}.auth*;
+    }
+
+    include     /etc/nginx/conf.d/phpmyadmin.inc*;
+    include     /etc/nginx/conf.d/phppgadmin.inc*;
+    include     /etc/nginx/conf.d/webmail.inc*;
+
+    include     /home/admin/conf/web/nginx.${NGINX_HOST}.conf*;
+}
