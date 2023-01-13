@@ -88,12 +88,6 @@ export default defineComponent({
         onSubmit(e: Event) {
             e.preventDefault();
 
-            if(!this.text) {
-                alert(`please fill text field`);
-
-                return
-            }
-
             if(this.text!== undefined && this.day!== undefined && this.done!== undefined) {
                 const task = {
                     id: this.id,
