@@ -155,9 +155,9 @@ export default defineComponent({
       }
     },
     editTaskForm(task: Task) {
-      if(this.taskToEdit.id !== undefined && this.taskToEdit.id === task.id) {
-        this.editErrors = [];
+      this.editErrors = [];
 
+      if(this.taskToEdit.id !== undefined && this.taskToEdit.id === task.id) {
         this.taskToEdit = {
             type: 'tasks',
             id: '',
@@ -172,8 +172,6 @@ export default defineComponent({
         
         this.showForm = false;
       }
-
-    
     },
     async editTask(taskEmit: Task) {
       try {
