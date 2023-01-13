@@ -20,7 +20,7 @@
             </h3>
             <span v-show="ifError('/data/attributes/day')" id="changed-name-error" class="ns-error-message field-validation-error">
                 <i class="fa fa-exclamation-circle error-indicator errorAlert" aria-hidden="true"></i>
-                <span class="ns-visually-hidden"> Error:</span> enter a task
+                <span class="ns-visually-hidden"> Error:</span> enter a Day & Time
             </span>
             <input v-model="day" placeholder="Add Day & Time" :class="[ ifError('/data/attributes/text') ? 'ns-input--error': '', 'ns-input', 'fw-30' ]" id="event-name" name="event-name" type="text" :aria-describedby="ifError('/data/attributes/text') ? 'event-name-hint event-name-error': 'event-name-hint'">
         </div>
