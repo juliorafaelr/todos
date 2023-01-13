@@ -59,16 +59,16 @@ export default defineComponent({
     watch: {
         taskToEdit: function() {
             if(
-            this.taskToEdit?.id !== undefined &&
-            this.taskToEdit?.attributes.text !== undefined &&
-            this.taskToEdit?.attributes.day !== undefined &&
-            this.taskToEdit?.attributes.done !== undefined
-        ) {
-            this.id = this.taskToEdit.id;
-            this.text = this.taskToEdit.attributes.text;
-            this.day = this.taskToEdit.attributes.day;
-            this.done = this.taskToEdit.attributes.done;
-        }
+                this.taskToEdit?.id !== undefined &&
+                this.taskToEdit?.attributes.text !== undefined &&
+                this.taskToEdit?.attributes.day !== undefined &&
+                this.taskToEdit?.attributes.done !== undefined
+            ) {
+                this.id = this.taskToEdit.id;
+                this.text = this.taskToEdit.attributes.text;
+                this.day = this.taskToEdit.attributes.day;
+                this.done = this.taskToEdit.attributes.done;
+            }
         }
     },
     created() {

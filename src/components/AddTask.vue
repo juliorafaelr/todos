@@ -74,13 +74,18 @@ export default defineComponent({
             }
 
             this.$emit('emitTask', newTask);
-
-            this.text = '';
-            this.day = '';
-            this.done = false;
         },
         ifError(field: string) {
             return this.createErrors?.filter((error) => error.source?.pointer === field)[0];
+        }
+    },
+    watch: {
+           createErrors: function() {
+            if(this.createErrors?.length === 0) {
+                this.text = '';
+                this.day = '';
+                this.done = false;
+            }
         }
     }
 })
