@@ -156,6 +156,8 @@ export default defineComponent({
     },
     editTaskForm(task: Task) {
       if(this.taskToEdit.id !== undefined && this.taskToEdit.id === task.id) {
+        this.editErrors = [];
+
         this.taskToEdit = {
             type: 'tasks',
             id: '',
@@ -217,6 +219,8 @@ export default defineComponent({
     },
     toggleAddForm() {
       this.showForm = !this.showForm;
+
+      this.createErrors= [];
 
       this.taskToEdit = {
         type: 'tasks',
