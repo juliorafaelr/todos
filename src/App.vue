@@ -2,10 +2,10 @@
   <div class="container">
    <HeaderTodos :showForm="showForm" @toggle-add-task="toggleAddForm" title="To-dos"/>
    <div v-show="showForm">
-      <AddTask @emit-task="createTask" ></AddTask>
+      <AddTask :createErrors="createErrors" @emit-task="createTask" ></AddTask>
    </div>
    <div v-if="taskToEdit.attributes.text !== ''">
-      <EditTask :taskToEdit="taskToEdit" @emit-task="editTask" ></EditTask>
+      <EditTask :editErrors="editErrors" :taskToEdit="taskToEdit" @emit-task="editTask" ></EditTask>
    </div>
    <TasksTodos 
     @task-emit-delete="deleteTask" 
@@ -16,13 +16,15 @@
 </template>
 
 <script lang="ts">
-import HeaderTodos from './components/HearderTodos.vue'
+import HeaderTodos from './components/HearderTodos.vue';
+import { CreateError } from './interfaces/CreateError';
 import TasksTodos from './components/TasksTodos.vue';
 import EditTask from './components/EditTask.vue';
 import AddTask from './components/AddTask.vue';
 import { Task } from './interfaces/Task';
 import { defineComponent } from "vue";
 import axios from 'axios';
+
 
 axios.defaults.baseURL = process.env.VUE_APP_API_HOST;
 
@@ -35,6 +37,10 @@ export default defineComponent({
   },
   data() {
     let tasks: Task[] = []
+
+    let createErrors: CreateError[] = [];
+
+    let editErrors: CreateError[] = [];
 
     let task: Task = {
         type: 'tasks',
@@ -49,7 +55,9 @@ export default defineComponent({
     return {
       taskToEdit: task,
       tasks: tasks,
-      showForm: false
+      showForm: false,
+      createErrors: createErrors,
+      editErrors: editErrors
      }
   },
   methods: {
@@ -140,7 +148,9 @@ export default defineComponent({
         this.showForm = !this.showForm;
       } catch(error) {
         if (axios.isAxiosError(error)) {
-          alert(`error message:  ${error.response?.data.errors[0].detail}`);
+          const errors : CreateError[] = error.response?.data.errors
+
+          this.createErrors = errors;
         }
       }
     },
@@ -199,7 +209,9 @@ export default defineComponent({
           this.showForm = false;
       } catch(error) {
         if (axios.isAxiosError(error)) {
-          alert(`error message:  ${error.response?.data.errors[0].detail}`);
+          const errors : CreateError[] = error.response?.data.errors
+
+          this.editErrors = errors;
         }
       }
     },
